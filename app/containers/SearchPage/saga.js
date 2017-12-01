@@ -206,19 +206,18 @@ export function* getResults(action) {
     console.time("Querying index.");
 
     if (query) {
-      items = yield searchEngine.query(query, index);
+      items = yield searchEngine.query(query);
     } else {
       items = yield searchEngine.getAll(index);
+      console.log(items);
       // Alphabetical by default if there is no query.
       items = alphabetize(items);
-
     }
     console.timeEnd("Query Loaded");
 
     let faceted = [];
 
     if (selectedFacets && selectedFacets.length > 0) {
-
       selectedFacets.forEach(function(selectedFacet) {
         let term = selectedFacet[0];
         let value = selectedFacet[1];
@@ -239,7 +238,9 @@ export function* getResults(action) {
       console.log("no selected facets");
       faceted = items;
     }
-    yield put(actionsearchResultsTotal(faceted.length));
+    console.log(searchEngine);
+    const resultCount = yield searchEngine.resultCount(faceted);
+    yield put(actionsearchResultsTotal(resultCount));
 
     const paged = faceted.slice(0, pageSize);
     yield put(searchResultsLoaded(paged));

@@ -16,24 +16,39 @@
  */
 
 import {
-    LEAVE_COLLECTION,
-    LOAD_COLLECTION,
-    LOAD_COLLECTION_SUCCESS,
-    LOAD_COLLECTION_ERROR,
-    LOAD_SCHEMA,
-    LOAD_SCHEMA_SUCCESS,
-    LOAD_SCHEMA_ERROR,
-    } from './constants';
+  SET_COLLECTION_NAME,
+  LEAVE_COLLECTION,
+  LOAD_COLLECTION,
+  LOAD_COLLECTION_SUCCESS,
+  LOAD_COLLECTION_ERROR,
+  LOAD_SCHEMA,
+  LOAD_SCHEMA_SUCCESS,
+  LOAD_SCHEMA_ERROR,
+} from './constants';
+
+
 
 /**
 * Load the repositories, this action starts the request saga
 *
 * @return {object} An action object with a type of LOAD_REPOS
 */
-function actionLoadCollection(collectionName) {
+function actionSetCollectionName(collectionName) {
+    return {
+      type: SET_COLLECTION_NAME,
+      collectionName,
+    };
+}
+
+/**
+* Load the repositories, this action starts the request saga
+*
+* @return {object} An action object with a type of LOAD_REPOS
+*/
+function actionLoadCollection(path) {
     return {
       type: LOAD_COLLECTION,
-      collectionName,
+      path,
     };
 }
 
@@ -81,10 +96,10 @@ function schemaLoaded(schema) {
 *
 * @return {object}      An action object with a type of LOAD_REPOS_SUCCESS passing the repos
 */
-function collectionLoaded(collection) {
+function collectionLoaded(doc) {
     return {
       type: LOAD_COLLECTION_SUCCESS,
-      collection,
+      doc,
     };
 }
 
@@ -108,6 +123,7 @@ export {
     actionLeaveCollection,
     collectionLoaded,
     actionLoadCollection,
+    actionSetCollectionName,
     actionLoadSchema,
     schemaLoaded,
     collectionLoadingError,

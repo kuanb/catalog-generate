@@ -6,7 +6,7 @@ import { call, put, select, takeLatest } from 'redux-saga/effects';
 import { LOAD_REPOS } from 'containers/App/constants';
 
 import { LOAD_COLLECTION, LOAD_SCHEMA, LOAD_COLLECTION_SUCCESS } from './constants';
-import { collectionLoaded, schemaLoaded } from './actions';
+import { actionSetCollectionName, collectionLoaded, schemaLoaded } from './actions';
 
 import { reposLoaded, repoLoadingError } from 'containers/App/actions';
 
@@ -31,20 +31,15 @@ export function* getSchema() {
   }
 }
 
-/**
- * Github repos request/response handler
- */
-export function* getRepos() {
-
-  // This breaks staic compilation. Lets fix that later :).
-  const url = window.location.href.split('/')[0] + '//' + window.location.href.split('/')[2];
-  // Select username from store
-  const collection = yield select(makeSelectCollectionName());
-  const requestURL = url + '/api/v1/collections/' + collection + '.json';
+export function* getDoc(items) {
+  const path = items.path;
+  const collectionName = path.split('/')[0];
+  yield put(actionSetCollectionName(collectionName));
+  const url = window.location.origin;
+  const requestURL = url + '/api/v1/collections/' + path + '.json';
   try {
-    // Call our request helper (see 'utils/request')
-    const currentCollectionne = yield call(request, requestURL);
-    yield put(collectionLoaded(currentCollectionne));
+    const doc = yield call(request, requestURL);
+    yield put(collectionLoaded(doc));
   } catch (err) {
     console.log("error?", err);
     yield put(repoLoadingError(err));
@@ -59,7 +54,7 @@ export default function* githubData() {
   // By using `takeLatest` only the result of the latest API call is applied.
   // It returns task descriptor (just like fork) so we can continue execution
   // It will be cancelled automatically on component unmount
-  yield takeLatest(LOAD_COLLECTION, getRepos);
+  yield takeLatest(LOAD_COLLECTION, getDoc);
   yield takeLatest(LOAD_SCHEMA, getSchema);
 
 }

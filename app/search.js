@@ -1,13 +1,16 @@
 import { call, put, select, takeLatest, fetch } from 'redux-saga/effects';
 import request from 'utils/request';
 import elasticlunr from 'elasticlunr';
+import elasticsearch from 'elasticsearch';
 
 class Search {
   *init() {
     return {};
   }
 
-  query() {}
+  *resultCount() {}
+
+  *query() {}
 }
 
 export class elasticLunr extends Search {
@@ -20,13 +23,17 @@ export class elasticLunr extends Search {
     return index;
   }
 
-  *query(query, index) {
-    const items = index.search(query, {expand: true});
+  *query(query) {
+    const items = this.index.search(query, {expand: true});
     return items;
   }
 
-  *getAll(index) {
-    const docs = index.documentStore.docs;
+  *resultCount(results) {
+    return results.length;
+  }
+
+  *getAll() {
+    const docs = this.index.documentStore.docs;
     const items = Object.keys(docs).map(function(index) {
       var item = {
         doc: docs[index],
@@ -46,15 +53,20 @@ export class simpleSearch extends Search {
     console.time("Loading index.");
     const index = yield call(request, url);
     console.timeEnd("Index Loaded");
+    this.index = index;
     return {index};
   }
 
-  *getAll(index) {
-    return index.index;
+  *getAll() {
+    return this.index.index;
   }
 
-  *query(query, index) {
-    return index.index.reduce((acc, doc) => {
+  *resultCount(results) {
+    return results.length;
+  }
+
+  *query(query) {
+    return this.index.index.reduce((acc, doc) => {
       const haystack = JSON.stringify(doc.doc);
       const needleRegExp = new RegExp(query.replace(/[-[\]{}()*+?.,\\^$|#\s]/g, "\\$&"), "i");
       const result = needleRegExp.test(haystack);
@@ -67,23 +79,39 @@ export class simpleSearch extends Search {
 }
 
 export class elasticSearch extends Search {
-  *query(query, index) {
-    const docs = yield call(request, interraConfig.search.endpoint + "?q=" +  query + "*");
-    const items = docs.hits.hits.map((index) => {
-      const item = {
-        doc: index._source,
-        score: index._score,
-        ref: index._source.interra.id,
-      }
-      return item;
-    });
-    return items;
 
-    return result;
+
+  *init() {
+    const index = elasticsearch.Client({
+      host: 'https://search-interra-hakxd4cqlxcaapxlc7hzatsani.us-west-2.es.amazonaws.com/hhs',
+    });
+    return index;
   }
+
+  *query(query, index) {
+    const docs = yield this.esSearch(query, index);
+  }
+
   *getAll(index) {
-    const docs = yield call(request, interraConfig.search.endpoint);
-    const items = docs.hits.hits.map((index) => {
+    const that = this;
+    const docs = yield this.esSearch("*", index);
+    return docs;
+  }
+
+  esSearch(query, index) {
+    const body = {
+  "query": {
+    "match": {
+      "title": "*MRSA*"
+    }
+  }
+};
+    const that = this;
+    return index.search({
+      body: body
+    }).then(function (docs) {
+      that.count = docs.hits.total;
+      const items = docs.hits.hits.map((index) => {
       const item = {
         doc: index._source,
         score: index._score,
@@ -91,10 +119,18 @@ export class elasticSearch extends Search {
       }
       return item;
     });
-    return items;
+      return items;
+    }, function (error) {
+      console.trace(error.message);
+    });
+  }
+
+  *resultCount(results) {
+    return this.count;
   }
 
 }
+
 
 const search = {
   elasticSearch,

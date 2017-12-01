@@ -93,6 +93,7 @@ function schemaExport(site, config, callback) {
     schema: {},
     map: {},
     uiSchema: {},
+    pageSchema: {},
     facets,
   };
   Async.each(collections, (collection, done) => {
@@ -115,7 +116,8 @@ function schemaExport(site, config, callback) {
     }
   }, () => {
     schemas.map = schema.mapSettings();
-    schema.uiSchema = schema.uiSchema();
+    schemas.uiSchema = schema.uiSchema();
+    schemas.pageSchema = siteInfo.pageSchema();
     fs.outputJson(`${apiDir}/schema.json`, schemas, (fileerr) => {
       callback(fileerr, !fileerr);
     });

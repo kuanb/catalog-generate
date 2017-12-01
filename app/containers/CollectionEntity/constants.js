@@ -9,6 +9,7 @@
  * export const YOUR_ACTION_CONSTANT = 'yourproject/YourContainer/YOUR_ACTION_CONSTANT';
  */
 
+export const SET_COLLECTION_NAME = 'app/CollectionEntity/SET_COLLECTION_NAME';
 export const LEAVE_COLLECTION = 'app/CollectionEntity/LEAVE_COLLECTION';
 export const LOAD_COLLECTION = 'app/CollectionEntity/LOAD_COLLECTION';
 export const LOAD_COLLECTION_SUCCESS = 'app/CollectionEntity/LOAD_COLLECTION_SUCCESS';

@@ -12,6 +12,7 @@
 import { fromJS } from 'immutable';
 
 import {
+  SET_COLLECTION_NAME,
   LEAVE_COLLECTION,
   LOAD_COLLECTION,
   LOAD_COLLECTION_SUCCESS,
@@ -24,23 +25,27 @@ const initialState = fromJS({
   loading: false,
   username: '',
   collectionName: '',
-  collection: false,
+  doc: false,
   error: false,
   schema: false,
+  path: '',
 });
 
 function homeReducer(state = initialState, action) {
   switch (action.type) {
     case LEAVE_COLLECTION:
       return initialState;
+    case SET_COLLECTION_NAME:
+      return state
+        .set('collectionName', action.collectionName);
     case LOAD_COLLECTION:
       return state
         .set('loading', true)
-        .set('collectionName', action.collectionName);
+        .set('path', action.path);
     case LOAD_COLLECTION_SUCCESS:
       return state
         .set('loading', false)
-        .set('collection', action.collection);
+        .set('doc', action.doc);
     case LOAD_SCHEMA:
       return state
         .set('loading', true)

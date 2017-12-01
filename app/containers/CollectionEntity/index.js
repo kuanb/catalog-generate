@@ -19,14 +19,14 @@ import injectReducer from 'utils/injectReducer';
 import injectSaga from 'utils/injectSaga';
 import H1 from 'components/H1';
 import PageContainer from 'components/PageContainer';
+import PageSection from 'containers/PageSection';
 import messages from './messages';
 import { loadRepos } from '../App/actions';
-import { actionLoadCollection, actionLoadSchema, actionLeaveCollection } from './actions';
+import { actionSetCollectionName, actionLoadCollection, actionLoadSchema, actionLeaveCollection } from './actions';
 import { makeSelectUsername } from './selectors';
 import reducer from './reducer';
 import saga from './saga';
 import Form from "react-jsonschema-form";
-import { Parser } from 'html-to-react';
 
 export class CollectionEntity extends React.PureComponent { // eslint-disable-line react/prefer-stateless-function
   /**
@@ -36,50 +36,51 @@ export class CollectionEntity extends React.PureComponent { // eslint-disable-li
 
   }
   componentWillUnmount() {
-
-      const { leaveCollection } = this.props;
-
-      leaveCollection();
+    const { leaveCollection } = this.props;
+    leaveCollection();
   }
 
-   componentWillMount() {
+  componentWillMount() {
+    const { doc, schema, loadSchema, loadCollection, repos, error } = this.props;
+    console.log(this.props);
 
-     const { collection, schema, loadSchema, loadCollection, repos, error } = this.props;
-
-     if (collection === false && error === false) {
-         // TODO: get from router.
-         loadCollection(window.location.pathname.substr(1));
-     }
-     if (schema === false) {
-        loadSchema();
-     }
-   }
+    if (doc === false && error === false) {
+      // TODO: get from router.
+      loadCollection(window.location.pathname.substr(1));
+    }
+    if (schema === false) {
+      loadSchema();
+    }
+  }
 
   render() {
-    const { loading, error, repos, collection } = this.props;
+    const { schema, loading, error, repos, doc, collectionName } = this.props;
     const reposListProps = {
       loading,
       error,
       repos,
     };
-    let data = this.props.collection ? this.props.collection : null;
-    let schema = this.props.schema ? this.props.schema.schema.dataset : null;
-    let description = null;
-    if (schema && data) {
-      const parser = new Parser();
 
-      description = parser.parse(this.props.collection.description);
+    const pageSchema = schema ? schema.pageSchema[collectionName] : false;
+    const collectionSchema = schema ? schema.schema[collectionName] : false;
 
-    } else {
-      description = "";
-    }
+    const title = doc ? doc.title : '';
 
     return (
       <PageContainer>
-          <H1>{this.props.collection.title}</H1>
-
-          {description}
-
+        <Helmet>
+          <title>{title}</title>
+        </Helmet>
+        <div className="row">
+          <div className="col-sm-3">
+            <PageSection type="Left" pageSchema={pageSchema} schema={collectionSchema} doc={doc} />
+          </div>
+          <div className="col-sm-9">
+            <H1>{title}</H1>
+            <PageSection type="Main" pageSchema={pageSchema} schema={collectionSchema} doc={doc} />
+            <PageSection type="Table" pageSchema={pageSchema} schema={collectionSchema} doc={doc} />
+          </div>
+        </div>
       </PageContainer>
     );
   }
@@ -87,7 +88,7 @@ export class CollectionEntity extends React.PureComponent { // eslint-disable-li
 
 CollectionEntity.propTypes = {
   collectionName: PropTypes.string,
-  collection: PropTypes.oneOfType([
+  doc: PropTypes.oneOfType([
     PropTypes.object,
     PropTypes.bool,
   ]),
@@ -101,6 +102,7 @@ CollectionEntity.propTypes = {
     PropTypes.object,
     PropTypes.bool,
   ]),
+  path: PropTypes.string,
   repos: PropTypes.oneOfType([
     PropTypes.array,
     PropTypes.bool,
@@ -113,14 +115,15 @@ CollectionEntity.propTypes = {
 
 export function mapDispatchToProps(dispatch) {
   return {
-    loadCollection: (collectionName) => dispatch(actionLoadCollection(collectionName)),
+    loadCollection: (path) => dispatch(actionLoadCollection(path)),
     loadSchema: () => dispatch(actionLoadSchema()),
     leaveCollection: () => dispatch(actionLeaveCollection()),
+    setCollectionName: () => dispatch(actionSetCollectionName()),
   };
 }
 
 const mapStateToProps = createStructuredSelector({
-  collection: makeSelectCollection(),
+  doc: makeSelectCollection(),
   collectionName: makeSelectCollectionName(),
   schema: makeSelectSchema(),
   loading: makeSelectLoading(),

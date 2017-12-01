@@ -49,6 +49,10 @@ injectGlobal`
   label {
     line-height: 1.5em;
   }
+  .search-list-item .label {
+      border-color: #888;
+      color: #888;
+  }
   .label {
     margin-right: 5px;
     border: 1px solid;

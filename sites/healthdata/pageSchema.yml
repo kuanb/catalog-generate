@@ -1,0 +1,56 @@
+dataset:
+  Title:
+    title: string 
+  Main:
+    description:
+      type: Text 
+      label: false 
+    theme:
+      type: Theme
+      label: false
+    keyword:
+      type: Tag
+      label: false
+    distribution:
+      type: Resource
+      label: false
+  Table:
+    identifier:
+      type: String
+      label: true
+    issued:
+      type: String
+      label: true
+    modified:
+      type: String
+      label: true
+    programCode:
+      type: String
+      label: true
+    bureauCode:
+      type: String
+      label: true
+    conformsTo:
+      type: String
+      label: true
+    dataQuality:
+      type: String
+      label: true
+  Left:
+    publisher:
+      type: Org 
+      labe: false
+  hidden:
+    - systemOfRecords
+    - spatial
+  hide:
+    theme: string 
+    accessLevel:
+    rights:
+    accrualPeriodicity:
+    describedBy:
+    describedByType:
+    temporal:
+    primaryITInvestmentUII:
+    landingPage:
+    isPartOf:

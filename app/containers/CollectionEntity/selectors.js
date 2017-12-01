@@ -9,7 +9,7 @@ const selectCol = (state) => { return state.get('collections')};
 
 const makeSelectCollection = () => createSelector(
   selectCol,
-  (collectionState) => { return collectionState.get('collection')}
+  (collectionState) => { return collectionState.get('doc')}
 );
 
 const makeSelectCollectionError = () => createSelector(
