@@ -23,8 +23,8 @@ export class elasticLunr extends Search {
     return index;
   }
 
-  *query(query) {
-    const items = this.index.search(query, {expand: true});
+  *query(query, index) {
+    const items = index.search(query, {expand: true});
     return items;
   }
 
@@ -32,8 +32,8 @@ export class elasticLunr extends Search {
     return results.length;
   }
 
-  *getAll() {
-    const docs = this.index.documentStore.docs;
+  *getAll(index) {
+    const docs = index.documentStore.docs;
     const items = Object.keys(docs).map(function(index) {
       var item = {
         doc: docs[index],
@@ -53,20 +53,19 @@ export class simpleSearch extends Search {
     console.time("Loading index.");
     const index = yield call(request, url);
     console.timeEnd("Index Loaded");
-    this.index = index;
-    return {index};
+        return {index};
   }
 
-  *getAll() {
-    return this.index.index;
+  *getAll(index) {
+    return index.index;
   }
 
   *resultCount(results) {
     return results.length;
   }
 
-  *query(query) {
-    return this.index.index.reduce((acc, doc) => {
+  *query(query, index) {
+    return index.index.reduce((acc, doc) => {
       const haystack = JSON.stringify(doc.doc);
       const needleRegExp = new RegExp(query.replace(/[-[\]{}()*+?.,\\^$|#\s]/g, "\\$&"), "i");
       const result = needleRegExp.test(haystack);

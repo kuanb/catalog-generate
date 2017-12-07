@@ -12,22 +12,26 @@ function SectionTypeTable(props) {
       return null;
     }
   });
-  return (
-    <div style={{clear: "both", padding: "5px 0"}}>
-      <h3>Additional Information</h3>
-      <table className="table table-bordered table-hover">
-        <thead>
-          <tr>
-            <th>Label</th>
-            <th>Value</th>
-          </tr>
-        </thead>
-        <tbody>
-          {rows}
-        </tbody>
-      </table>
-    </div>
-  );
+  if (rows.length) {
+    return (
+      <div style={{clear: "both", padding: "5px 0"}}>
+        <h3>Additional Information</h3>
+        <table className="table table-bordered table-hover">
+          <thead>
+            <tr>
+              <th>Label</th>
+              <th>Value</th>
+            </tr>
+          </thead>
+          <tbody>
+            {rows}
+          </tbody>
+        </table>
+      </div>
+    );
+  } else {
+    return (<span></span>);
+  }
 }
 
 SectionTypeTable.propTypes = {

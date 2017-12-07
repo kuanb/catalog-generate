@@ -206,7 +206,7 @@ export function* getResults(action) {
     console.time("Querying index.");
 
     if (query) {
-      items = yield searchEngine.query(query);
+      items = yield searchEngine.query(query, index);
     } else {
       items = yield searchEngine.getAll(index);
       console.log(items);

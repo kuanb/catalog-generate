@@ -89,6 +89,18 @@ prog
       }
     });
   })
+  .command('build-sitemap')
+  .help('builds sitemap file for a site')
+  .argument('site', 'The site to build from')
+  .action((args) => {
+    Build.siteMapExport(args.site, config, (err) => {
+      if (err) {
+        console.log(chalk.red(err)); // eslint-disable-line no-console
+      } else {
+        console.log(chalk.green('Sitemap built.')); // eslint-disable-line no-console
+      }
+    });
+  })
   .command('build-schema')
   .help('builds schema file for a site')
   .argument('site', 'The site to build from')

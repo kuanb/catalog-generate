@@ -136,6 +136,106 @@ function configExport(site, config, callback) {
   });
 }
 
+function siteMapDocBuild(doc, cols, primaryCol) {
+  const entries = {
+    entries: [],
+    children: {},
+  };
+  return cols.reduce((acc, col) => {
+    const entry = {};
+    if (col === primraryCol) {
+      entry.loc = `${col}/${doc.interra.id}`; 
+      entry.title = doc.title;
+    }
+  }, entries);
+}
+
+
+function getCollectionMap(schema, content, siteMapCollections, primaryCollection, callback) {
+  schema.dereference(primaryCollection, (e, primaryCollectionSchema) => {
+    content.findByCollection(primaryCollection, true, (loadErr, results) => {
+      Async.map(results, (doc, done) => {
+        content.Map(doc, primaryCollection, (mapErr, mappedDoc) => {
+          done(mapErr, mappedDoc);
+        }); 
+      }, (err, docs) => {
+        const cols = siteMapCollections.slice().reverse();
+        const siteMapCollectionsBuild = docs.reduce((acc, doc) => {
+          const entries = cols.reduce((entryAcc, col) => {
+            if (col === primaryCollection) {
+              return {
+                loc: `/${col}/${doc.interra.id}`, 
+                title: doc.title,
+                children: [entryAcc],
+              };
+            } else {
+              const field = content.getRefFieldVal(primaryCollection, col);
+              if (field in doc) {
+                const type = primaryCollectionSchema.properties[field].type;
+                if (type === 'object') {
+                  return {
+                    loc: `/${col}/${doc[field].interra.id}`, 
+                    title: doc[field].name,
+                    children: [entryAcc],
+                  };
+                } else {
+                  const items = doc[field].map((item) => {
+                    return {
+                      loc: `/${col}/${item.interra.id}`, 
+                      title: item.title,
+                    };
+                  });
+                  return items;
+                }
+              }
+              else {
+                exit();
+              }
+            }
+          }, {});
+          const highestLevelLoc = entries.loc;
+          const i = Object.values(acc).findIndex((i) => { return i.loc === highestLevelLoc});
+          if (i !== -1) {
+            acc[i].children.push(entries.children);
+            return acc; 
+          } else {
+            acc.push(entries);
+            return acc;
+          }
+        }, []);
+        callback(err, siteMapCollectionsBuild);
+      });
+    });
+  });
+}
+
+function addCollectionsMaptoSiteMap(obj, arr) {
+  return JSON.parse(JSON.stringify(obj)
+    .replace(new RegExp('\\[\"collections\"]'), JSON.stringify(arr)))
+}
+
+/**
+ * Exports search file for site.
+ */
+function siteMapExport(site, config, callback) {
+  const siteInfo = new Site(site, config);
+  const siteMap = siteInfo.getConfigItem('siteMap');
+  const siteMapCollections = siteInfo.getConfigItem('siteMapCollections');
+  const schemaName = siteInfo.getConfigItem('schema');
+  const schema = new Schema(schemaName, config);
+  const content = prepare(site, config);
+  const apiDir = path.join(config.get('buildDir'), site, apiSubDir);
+  const primaryCollection = schema.getConfigItem('primaryCollection');
+  getCollectionMap(schema, content, siteMapCollections, primaryCollection, (err, result) => {
+    const mapBuild = addCollectionsMaptoSiteMap(siteMap, result);
+    const file = path.join(apiDir, 'sitemap.json');
+    fs.outputFile(file, JSON.stringify(mapBuild), (fileErr) => {
+      callback(fileErr, !fileErr);
+    });
+  });
+}
+
+
 /**
  * Exports search file for site.
  */
@@ -477,6 +577,7 @@ module.exports = {
   schemaExport,
   searchExport,
   swaggerExport,
+  siteMapExport,
   datajsonExport,
   all,
 };

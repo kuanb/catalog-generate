@@ -12,7 +12,7 @@ function PageItemText(props) {
 
   return (
     <div style={{clear: "both", lineHeight: "1.8em"}}>
-    {label} {props.data.value}
+    {label} {text}
     </div>
   );
 }
