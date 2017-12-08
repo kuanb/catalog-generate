@@ -15,6 +15,7 @@ import PageItemExtentMap from 'components/PageItemExtentMap';
 import PageItemImage from 'components/PageItemImage';
 import PageItemOrg from 'components/PageItemOrg';
 import PageItemResource from 'components/PageItemResource';
+import PageItemSearchPage from 'components/PageItemSearchPage';
 import PageItemSocial from 'components/PageItemSocial';
 import PageItemString from 'components/PageItemString';
 import PageItemTag from 'components/PageItemTag';
@@ -37,6 +38,7 @@ export class PageSection extends React.PureComponent { // eslint-disable-line re
       PageItemTag,
       PageItemTheme,
       PageItemExtentMap,
+      PageItemSearchPage,
       PageItemResource,
       PageItemSocial,
     };
@@ -58,6 +60,7 @@ export class PageSection extends React.PureComponent { // eslint-disable-line re
         const item = {
           data: {
             field,
+            doc,
             def,
             value: doc[field],
           },

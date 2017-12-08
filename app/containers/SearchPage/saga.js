@@ -185,7 +185,6 @@ export function* loadFacets(facets, results) {
 export function* getResults(action) {
   const searchType = interraConfig.search.type;
   const searchEngine = new search[searchType];
-
   var query = action.query;// yield select(makeSelectQuery());
   var index = yield select(makeSelectIndex());
   let selectedFacets = action.selectedFacets;
@@ -209,14 +208,12 @@ export function* getResults(action) {
       items = yield searchEngine.query(query, index);
     } else {
       items = yield searchEngine.getAll(index);
-      console.log(items);
       // Alphabetical by default if there is no query.
       items = alphabetize(items);
     }
     console.timeEnd("Query Loaded");
 
     let faceted = [];
-
     if (selectedFacets && selectedFacets.length > 0) {
       selectedFacets.forEach(function(selectedFacet) {
         let term = selectedFacet[0];
@@ -238,7 +235,6 @@ export function* getResults(action) {
       console.log("no selected facets");
       faceted = items;
     }
-    console.log(searchEngine);
     const resultCount = yield searchEngine.resultCount(faceted);
     yield put(actionsearchResultsTotal(resultCount));
 

@@ -51,8 +51,11 @@ function docsExport(site, config, callback) {
   content.findAll(true, (err, results) => {
     Async.each(content.collections, (collection, done) => {
       const docs = results[collection];
-      content.exportMany(docs, collection, (experr) => {
-        done(experr, !experr);
+      const file = path.join(config.get('buildDir'), site, 'api/v1/collections', `${collection}.json`);
+      fs.outputFile(file, JSON.stringify(docs), (fileerr) => {
+        content.exportMany(docs, collection, (experr) => {
+          done(experr, !experr);
+        });
       });
     }, (eacherr) => {
       callback(eacherr, !eacherr);

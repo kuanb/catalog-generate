@@ -39,8 +39,8 @@ export class SearchListItem extends React.PureComponent { // eslint-disable-line
       return themes.map(function(theme) {
         i++
         const icon = theme.icon ? theme.icon : 'cog';
-        return <div style={{float: "left", paddingRight: "10px"}}>
-            <div
+        return <div key={`dist-${theme.identifier}-${i}`} style={{float: "left", paddingRight: "10px"}}>
+          <div
             title={`theme: ${theme.title}`} key={`dist-id-${theme.identifier}-${i}`}
             style={{fontSize:"1.3em", color: "#555", marginTop: "-2px", paddingLeft: "5px", float:"left"}}
             className={`font-icon-select-1 font-icon-select-1-${icon}`}>
@@ -61,7 +61,7 @@ export class SearchListItem extends React.PureComponent { // eslint-disable-line
     // Put together the content of the repository
     const content = (
       <Wrapper className="search-list-item">
-        <Link to={`dataset/${item.doc.interra.id}`} style={{fontSize: "1.2em"}}>
+        <Link to={`/dataset/${item.doc.interra.id}`} style={{fontSize: "1.2em"}}>
           { item.doc.title }
         </Link>
         <div style={{paddingTop: "15px"}} className="row">

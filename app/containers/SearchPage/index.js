@@ -84,7 +84,12 @@ export class SearchPage extends React.Component { // eslint-disable-line react/p
 
   componentWillMount() {
 
-    const { query, results, error, facets, loadResults, selectedFacets, loadFacets, updateFacets, facetsResults } = this.props;
+    const { query, results, error, facets, loadResults, loadFacets, updateFacets, facetsResults, passedFacets } = this.props;
+    let { selectedFacets } = this.props;
+    if (passedFacets) {
+      selectedFacets = passedFacets;
+    }
+
     if (results === false && error === false && selectedFacets === false) {
       loadResults(null, false);
     }
@@ -94,13 +99,10 @@ export class SearchPage extends React.Component { // eslint-disable-line react/p
     if (results === false & error == false && selectedFacets) {
       loadResults(null, selectedFacets);
     }
-
-
   }
 
   render() {
     const { query, results, resultsCount, error, loading, facets, loadFacets, loadingFacets, selectedFacets, facetsResults, loadingFacetsResults } = this.props;
-
     const resultmessage = query  && resultsCount  ? resultsCount + " Results for \"" + query + "\"": resultsCount + " Results";
 
     const searchListProps = {
@@ -122,26 +124,13 @@ export class SearchPage extends React.Component { // eslint-disable-line react/p
          selectedFacets,
      };
 
-    const breadcrumbs = [{
-      title: 'Home',
-      loc: '/',
-      icon: 'home'
-    },{
-      title: 'Search',
-      loc: '/search'
-    }];
-
     return (
-      <PageContainer>
-        <Helmet>
-          <title>Search</title>
-        </Helmet>
-        <Breadcrumb breadcrumbs={breadcrumbs} />
+      <div>
         <div className="col-xs-12 col-md-3">
           <InputGroup>
               <input type="text" className="form-control" onChange={this.queryEnter.bind(this)} placeholder="Search for..." />
               <span className="input-group-btn">
-                  <button className="btn btn-default" type="button">Go!</button>
+                <button className="btn btn-default" type="button">Go!</button>
               </span>
           </InputGroup>
           <FormGroup>
@@ -159,7 +148,7 @@ export class SearchPage extends React.Component { // eslint-disable-line react/p
         <div className="col-xs-12 col-md-9">
           <SearchList {...searchListProps} />
         </div>
-      </PageContainer>
+      </div>
     );
   }
 }

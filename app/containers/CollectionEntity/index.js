@@ -95,7 +95,6 @@ export class CollectionEntity extends React.PureComponent { // eslint-disable-li
       left = <div className="col-sm-3"><PageSection type="Left" pageSchema={pageSchema} schema={collectionSchema} doc={doc} /></div>;
       centerCol = 9;
     }
-    console.log(left);
 
     return (
       <PageContainer>
