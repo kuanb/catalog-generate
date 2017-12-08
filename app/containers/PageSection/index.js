@@ -11,12 +11,15 @@ import { Link } from 'react-router-dom';
 import ListItem from 'components/ListItem';
 import Wrapper from './Wrapper';
 import StyledLink from './StyledLink';
-import PageItemString from 'components/PageItemString';
-import PageItemText from 'components/PageItemText';
+import PageItemExtentMap from 'components/PageItemExtentMap';
+import PageItemImage from 'components/PageItemImage';
 import PageItemOrg from 'components/PageItemOrg';
-import PageItemTag from 'components/PageItemTag';
-import PageItemTheme from 'components/PageItemTheme';
 import PageItemResource from 'components/PageItemResource';
+import PageItemSocial from 'components/PageItemSocial';
+import PageItemString from 'components/PageItemString';
+import PageItemTag from 'components/PageItemTag';
+import PageItemText from 'components/PageItemText';
+import PageItemTheme from 'components/PageItemTheme';
 import SectionTypeMain from 'components/SectionTypeMain';
 import SectionTypeTitle from 'components/SectionTypeTitle';
 import SectionTypeLeft from 'components/SectionTypeLeft';
@@ -27,12 +30,15 @@ export class PageSection extends React.PureComponent { // eslint-disable-line re
   render() {
 
     const pageItems = {
+      PageItemImage,
       PageItemOrg,
       PageItemString,
       PageItemText,
       PageItemTag,
       PageItemTheme,
+      PageItemExtentMap,
       PageItemResource,
+      PageItemSocial,
     };
     const SectionTypes = {
       SectionTypeMain,
@@ -47,14 +53,16 @@ export class PageSection extends React.PureComponent { // eslint-disable-line re
       const section = Object.keys(fields).map((field, index) => {
         const Component = pageItems[`PageItem${fields[field].type}`];
         const label = fields[field].label;
-        const labelValue = schema.properties[field].title;
+        const labelValue = field === 'widget' ? '' : schema.properties[field].title;
+        const def = fields[field];
         const item = {
           data: {
             field,
+            def,
             value: doc[field],
           },
         };
-        if (field in doc) {
+        if (field in doc || field === 'widget') {
           return (<Component labelValue={labelValue} label={label} key={index} {...item} />);
         }
       },'<div></div>');

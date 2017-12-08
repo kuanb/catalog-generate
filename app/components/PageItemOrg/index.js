@@ -7,6 +7,7 @@ import { Link } from 'react-router-dom';
 
 
 function PageItemOrg(props) {
+  console.log(props.data);
   const name = props.data.value.name;
   const image = props.data.value.image ? <img alt={name} src={props.data.value.image} /> : '';
   const description = props.data.value.description;
@@ -16,8 +17,8 @@ function PageItemOrg(props) {
     <div style={{borderRadius: "5px",
     border: "1px solid #ddd",
     marginBottom: "20px",
-    padding: "5px 20px"}}>
-      {image}
+    padding: "15px 20px"}}>
+      <div style={{textAlign: "center", padding: "15px 0"}}>{image}</div>
       <h3><Link to={link}>{name}</Link></h3>
       {description}
     </div>

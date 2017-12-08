@@ -225,6 +225,7 @@
     "elasticsearch": "^14.0.0",
     "excerpts": "0.0.2",
     "express": "4.15.3",
+    "font-awesome": "^4.7.0",
     "fontfaceobserver": "2.0.9",
     "history": "4.6.3",
     "hoist-non-react-statics": "2.1.1",
@@ -234,6 +235,7 @@
     "intl": "1.2.5",
     "invariant": "2.2.2",
     "ip": "1.1.5",
+    "leaflet": "^1.2.0",
     "lodash": "4.17.4",
     "lunr": "^2.1.2",
     "minimist": "1.2.0",
@@ -255,6 +257,7 @@
     "styled-components": "2.0.0",
     "swagger-ui": "^3.1.7",
     "warning": "3.0.0",
+    "wellknown": "^0.5.0",
     "whatwg-fetch": "2.0.3"
   },
   "devDependencies": {

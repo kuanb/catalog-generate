@@ -89,6 +89,14 @@ export class CollectionEntity extends React.PureComponent { // eslint-disable-li
       }
     }
 
+    let left = <div></div>;
+    let centerCol = 12;
+    if (pageSchema && Object.keys(pageSchema).indexOf('Left') !== -1) {
+      left = <div className="col-sm-3"><PageSection type="Left" pageSchema={pageSchema} schema={collectionSchema} doc={doc} /></div>;
+      centerCol = 9;
+    }
+    console.log(left);
+
     return (
       <PageContainer>
         <Helmet>
@@ -96,10 +104,8 @@ export class CollectionEntity extends React.PureComponent { // eslint-disable-li
         </Helmet>
         <Breadcrumb loading={breadcrumbLoading} breadcrumbs={breadcrumb}/>
         <div className="row">
-          <div className="col-sm-3">
-            <PageSection type="Left" pageSchema={pageSchema} schema={collectionSchema} doc={doc} />
-          </div>
-          <div className="col-sm-9">
+          {left}
+          <div className={`col-sm-${centerCol}`} style={{padding: "0 25px"}}>
             <H1>{title}</H1>
             <PageSection type="Main" pageSchema={pageSchema} schema={collectionSchema} doc={doc} />
             <PageSection type="Table" pageSchema={pageSchema} schema={collectionSchema} doc={doc} />

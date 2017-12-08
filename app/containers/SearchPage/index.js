@@ -18,6 +18,7 @@ import FacetList from 'components/FacetList';
 import PageContainer from 'components/PageContainer';
 import InputGroup from './InputGroup';
 import FormGroup from './FormGroup';
+import Breadcrumb from 'components/Breadcrumb';
 
 import injectSaga from 'utils/injectSaga';
 import injectReducer from 'utils/injectReducer';
@@ -121,11 +122,21 @@ export class SearchPage extends React.Component { // eslint-disable-line react/p
          selectedFacets,
      };
 
+    const breadcrumbs = [{
+      title: 'Home',
+      loc: '/',
+      icon: 'home'
+    },{
+      title: 'Search',
+      loc: '/search'
+    }];
+
     return (
       <PageContainer>
         <Helmet>
           <title>Search</title>
         </Helmet>
+        <Breadcrumb breadcrumbs={breadcrumbs} />
         <div className="col-xs-12 col-md-3">
           <InputGroup>
               <input type="text" className="form-control" onChange={this.queryEnter.bind(this)} placeholder="Search for..." />

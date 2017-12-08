@@ -11,7 +11,7 @@ function PageItemText(props) {
   const text = props.data.value ?  parser.parse(props.data.value) : '';
 
   return (
-    <div style={{clear: "both", lineHeight: "1.8em"}}>
+    <div className="media-body" style={{clear: "both", lineHeight: "1.8em"}}>
     {label} {text}
     </div>
   );

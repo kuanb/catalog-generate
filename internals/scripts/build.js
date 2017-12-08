@@ -136,21 +136,6 @@ function configExport(site, config, callback) {
   });
 }
 
-function siteMapDocBuild(doc, cols, primaryCol) {
-  const entries = {
-    entries: [],
-    children: {},
-  };
-  return cols.reduce((acc, col) => {
-    const entry = {};
-    if (col === primraryCol) {
-      entry.loc = `${col}/${doc.interra.id}`; 
-      entry.title = doc.title;
-    }
-  }, entries);
-}
-
-
 function getCollectionMap(schema, content, siteMapCollections, primaryCollection, callback) {
   schema.dereference(primaryCollection, (e, primaryCollectionSchema) => {
     content.findByCollection(primaryCollection, true, (loadErr, results) => {
@@ -162,12 +147,15 @@ function getCollectionMap(schema, content, siteMapCollections, primaryCollection
         const cols = siteMapCollections.slice().reverse();
         const siteMapCollectionsBuild = docs.reduce((acc, doc) => {
           const entries = cols.reduce((entryAcc, col) => {
+            let entry = {};
             if (col === primaryCollection) {
-              return {
+              entry = {
                 loc: `/${col}/${doc.interra.id}`, 
                 title: doc.title,
-                children: [entryAcc],
+                children: entryAcc,
               };
+
+              return entry;
             } else {
               const field = content.getRefFieldVal(primaryCollection, col);
               if (field in doc) {
@@ -196,7 +184,7 @@ function getCollectionMap(schema, content, siteMapCollections, primaryCollection
           const highestLevelLoc = entries.loc;
           const i = Object.values(acc).findIndex((i) => { return i.loc === highestLevelLoc});
           if (i !== -1) {
-            acc[i].children.push(entries.children);
+            acc[i].children.push(entries.children[0]);
             return acc; 
           } else {
             acc.push(entries);

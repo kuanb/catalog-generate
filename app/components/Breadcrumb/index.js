@@ -12,9 +12,7 @@ function Breadcrumb(props) {
   let items = (<li></li>);
 
   if (!props.loading && props.breadcrumbs) {
-    console.log(props.breadcrumbs);
     items = props.breadcrumbs.map((breadcrumb, i) => {
-      console.log(i);
       let text = '';
       if (breadcrumb.icon) {
         text = <span className={`glyphicon glyphicon-${breadcrumb.icon}`}></span>;
@@ -23,7 +21,7 @@ function Breadcrumb(props) {
       }
       let link = '';
       if (i === props.breadcrumbs.length - 1) {
-        link = {text}
+        link = text
       } else {
         link = <Link to={breadcrumb.loc}>{text}</Link>;
       }

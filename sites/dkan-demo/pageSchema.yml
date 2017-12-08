@@ -65,12 +65,18 @@ dataset:
       type: String
       label: true
     spatial:
-      type: String
+      type: String 
       label: true
   Left:
     publisher:
       type: Org 
       labe: false
+    spatial:
+      type: ExtentMap 
+      label: true
+    widget:
+      type: Social
+      label: false
 distribution:
   Main:
     description:
@@ -112,10 +118,11 @@ distribution:
       label: true
 organization:
   Main:
-    description:
-      type: String
-      label: false
     image:
-      type: String
+      type: Image 
       lable: false
+      float: left
+    description:
+      type: Text 
+      label: false
     

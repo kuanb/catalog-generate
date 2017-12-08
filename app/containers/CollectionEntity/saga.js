@@ -49,20 +49,17 @@ const siteMapTree = function(struct, cmp) {
 
 
 export function* getBreadCrumb(action) {
-  console.log('bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb', action.path);
   let siteMap = yield select(makeSelectSiteMap());
   if (!siteMap) {
     siteMap = yield getSiteMap();
     yield put(siteMapLoaded(siteMap));
   }
-  console.log(siteMap);
   let breadcrumb = [{
     'title': 'Home',
     'loc': '/',
     'icon': 'home'
   }];
   const location = siteMapTree(siteMap[0], `/${action.path}`);
-  console.log(location);
   if (location) {
   location.reduce((acc, n) => {
     acc = acc.children[n];
