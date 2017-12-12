@@ -104,7 +104,7 @@ export class CollectionEntity extends React.PureComponent { // eslint-disable-li
         <Breadcrumb loading={breadcrumbLoading} breadcrumbs={breadcrumb}/>
         <div className="row">
           {left}
-          <div className={`col-sm-${centerCol}`} style={{padding: "0 25px"}}>
+          <div className={`col-sm-${centerCol}`}>
             <H1>{title}</H1>
             <PageSection type="Main" pageSchema={pageSchema} schema={collectionSchema} doc={doc} />
             <PageSection type="Table" pageSchema={pageSchema} schema={collectionSchema} doc={doc} />

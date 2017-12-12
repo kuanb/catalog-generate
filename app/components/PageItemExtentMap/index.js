@@ -13,7 +13,6 @@ class PageItemExtentMap extends React.Component {
     const data = this.props.data.value;
     if (data) {
     const geoJsonData = parse(data);
-    console.log(geoJsonData);
     const map = L.map('map');
     L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
       attribution: 'Map data &copy; <a href=\"http://openstreetmap.org\">OpenStreetMap</a>'

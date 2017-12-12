@@ -11,8 +11,6 @@ function PageItemSearchPage(props) {
   const collection = props.data.def.collection;
   const item = props.data.doc[props.data.def.arg];
   const selectedFacets = [[collection, item]];
-  console.log(props);
-  console.log(item);
   return (
     <div style={{margin: "50px 0"}}>
     {label}

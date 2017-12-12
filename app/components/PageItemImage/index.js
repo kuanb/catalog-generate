@@ -7,7 +7,6 @@ import Wrapper from './Wrapper';
 function PageItemImage(props) {
   const label = props.label ? <strong>{props.labelValue}:</strong> : '';
   const float = props.data.def.float;
-  console.log(props);
   return (
     <div className={`media-${float}`}>
     {label} <img src={props.data.value} />
