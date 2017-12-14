@@ -1,6 +1,8 @@
 name: HealthData
-description: 'This was a lot of work'
-url: healthdata-example.interra.io
+description: 'Example of a harvested site creaed with Interra Catalog'
+prodUrl: http://healthdata-example.interra.io
+testUrl: http://localhost:3000
+devUrl: http://localhost:3000
 identifier: healthdata
 schema: pod-full
 front-page-icon-collection: theme
@@ -23,6 +25,17 @@ search:
     - modified
     - distribution
 private:
+  algolia:
+    applicationId: 
+    apiKey:  
+    index: healthdata 
+  aws:
+    accessKeyId: AKIAIXCVW6QRASG532ZQ 
+    secretAccessKey: 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
+    region: us-west-2
+    es:
+      endpoint: https://search-interra-hakxd4cqlxcaapxlc7hzatsani.us-west-2.es.amazonaws.com
+      index: hhs 
 fontConfig:
   backColor: "#fff"
   link: "#0A77BD"

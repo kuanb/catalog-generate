@@ -21,6 +21,25 @@ function prepare(site, config) {
 }
 
 /**
+ * Exports media files.
+ */
+function mediaExport(site, config, callback) {
+  const buildDir = path.join(config.get('buildDir'), site, 'media');
+  const siteDir = path.join(config.get('sitesDir'), site, 'media');
+  fs.emptyDirSync(buildDir);
+  fs.copySync(siteDir, buildDir);
+  // Moves logo.png if it exists.
+  if (fs.pathExistsSync(path.join(config.get('sitesDir'), site, '/logo.png'))) {
+    fs.copySync(path.join(config.get('sitesDir'), site, '/logo.png'), path.join(config.get('buildDir'), site, '/logo.png'));
+  }
+  // Moves favicon.ico if it exists.
+  if (fs.pathExistsSync(path.join(config.get('sitesDir'), site, '/favicon.ico'))) {
+    fs.copySync(path.join(config.get('sitesDir'), site, '/favicon.ico'), path.join(config.get('buildDir'), site, '/favicon.ico'));
+  }
+  callback(null, true);
+}
+
+/**
  * Exports routes.
  */
 function routesExport(site, config, callback) {
@@ -45,12 +64,20 @@ function routesExport(site, config, callback) {
 /**
  * Exports json files for each doc in each collection.
  */
-function docsExport(site, config, callback) {
+function docsExport(site, config, env, callback) {
   const content = prepare(site, config);
+  const siteInfo = new Site(site, config);
+  const url = siteInfo.getConfigItem(`${env}Url`);
+  const re = new RegExp('\\[interraUrl\\]', 'g');
 
   content.findAll(true, (err, results) => {
     Async.each(content.collections, (collection, done) => {
-      const docs = results[collection];
+      let docs = results[collection];
+      // Replaces interraUrl with env url.
+      // TODO: move to content model in exportOne.
+      docs = JSON.stringify(docs);
+      docs = docs.replace(re, url);
+      docs = JSON.parse(docs);
       const file = path.join(config.get('buildDir'), site, 'api/v1/collections', `${collection}.json`);
       fs.outputFile(file, JSON.stringify(docs), (fileerr) => {
         content.exportMany(docs, collection, (experr) => {
@@ -66,12 +93,19 @@ function docsExport(site, config, callback) {
 /**
  * Exports json file for single doc.
  */
-function docExport(site, config, collection, interraId, callback) {
+function docExport(site, config, collection, interraId, env, callback) {
   const content = prepare(site, config);
+  const siteInfo = new Site(site, config);
+  const url = siteInfo.getConfigItem(`${env}Url`);
+  const re = new RegExp('\\[interraUrl\\]', 'g');
+
   content.findByInterraId(interraId, collection, (err, doc) => {
     if (err) callback(err);
     content.Deref(doc, (derefErr, dereffed) => {
       if (err) callback(derefErr);
+      dereffed = JSON.stringify(dereffed);
+      dereffed = dereffed.replace(re, url);
+      dereffed = JSON.parse(dereffed);
       content.exportOne(interraId, collection, dereffed, (exportErr) => {
         callback(exportErr, !exportErr);
       });
@@ -523,10 +557,10 @@ function datajsonExport(site, config, callback) {
   });
 }
 
-function all(site, config, callback) {
+function all(site, config, env, callback) {
   Async.waterfall([
     (done) => {
-      docsExport(site, config, (err) => {
+      docsExport(site, config, env, (err) => {
         done(err);
       });
     },
@@ -551,6 +585,11 @@ function all(site, config, callback) {
       });
     },
     (done) => {
+      mediaExport(site, config, (err) => {
+        done(err);
+      });
+    },
+    (done) => {
       datajsonExport(site, config, (err) => {
         done(err);
       });
@@ -569,6 +608,7 @@ module.exports = {
   searchExport,
   swaggerExport,
   siteMapExport,
+  mediaExport,
   datajsonExport,
   all,
 };

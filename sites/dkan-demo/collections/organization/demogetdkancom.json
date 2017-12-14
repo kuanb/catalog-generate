@@ -2,7 +2,7 @@
   "@type": "org:Organization",
   "name": "DKAN Demo Examples",
   "description": "These are examples from the <a href='http://demo.getdkan.com'>DKAN demo</a> site.",
-  "image": "http://demo.getdkan.com/profiles/dkan/themes/nuboot_radix/logo.svg",
+  "image": "[interraUrl]/media/nuboot_radix/logo.svg",
   "interra": {
     "id": "demogetdkancom",
     "source": "dkandemo"

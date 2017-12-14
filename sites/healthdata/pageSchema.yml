@@ -1,6 +1,4 @@
 dataset:
-  Title:
-    title: string 
   Main:
     description:
       type: Text 
@@ -15,10 +13,10 @@ dataset:
       type: Resource
       label: false
   Table:
-    identifier:
+    issued:
       type: String
       label: true
-    issued:
+    identifier:
       type: String
       label: true
     modified:
@@ -36,21 +34,88 @@ dataset:
     dataQuality:
       type: String
       label: true
+    accessLevel:
+      type: String
+      label: true
+    temporal:
+      type: String
+      label: true
+    rights:
+      type: String
+      label: true
+    describedBy:
+      type: String
+      label: true
+    describedByType:
+      type: String
+      label: true
+    accrualPeriodicity:
+      type: String
+      label: true
+    primaryITInvestmentUII:
+      type: String
+      label: true
+    landingPage:
+      type: String
+      label: true
+    isPartOf:
+      type: String
+      label: true
+    systemOfRecords:
+      type: String
+      label: true
+    spatial:
+      type: String
+      label: true
   Left:
     publisher:
       type: Org 
       labe: false
-  hidden:
-    - systemOfRecords
-    - spatial
-  hide:
-    theme: string 
-    accessLevel:
-    rights:
-    accrualPeriodicity:
+distribution:
+  Main:
+    description:
+      type: Text 
+      label: true 
+  Table:
+    downloadURL:
+      type: String
+      label: true
+    accessURL:
+      type: String
+      label: true
+    isssued:
+      type: String
+      label: true
+    identifier:
+      type: String
+      label: true
+    format:
+      type: String
+      label: true
+    fileLocation:
+      type: String
+      label: true
+    mediaType:
+      type: String
+      label: true
+    mediaSize:
+      type: String
+      label: true
+    conformsTo:
+      type: String
+      label: true
     describedBy:
+      type: String
+      label: true
     describedByType:
-    temporal:
-    primaryITInvestmentUII:
-    landingPage:
-    isPartOf:
+      type: String
+      label: true
+organization:
+  Main:
+    description:
+      type: Text 
+      label: false
+    image:
+      type: String
+      lable: false
+    
