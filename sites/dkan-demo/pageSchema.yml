@@ -83,11 +83,18 @@ distribution:
       type: Text 
       label: false
     downloadURL:
-      type: String
-      label: true
+      type: FileDownload 
+      label: false 
     accessURL:
-      type: String
-      label: true
+      type: FileDownload 
+      label: false 
+    widget:
+      type: FilePreview
+      label: false
+      fields:
+        - downloadURL
+        - accessURL 
+
   Table:
     isssued:
       type: String

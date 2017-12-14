@@ -12,6 +12,8 @@ import ListItem from 'components/ListItem';
 import Wrapper from './Wrapper';
 import StyledLink from './StyledLink';
 import PageItemExtentMap from 'components/PageItemExtentMap';
+import PageItemFileDownload from 'components/PageItemFileDownload';
+import PageItemFilePreview from 'containers/PageItemFilePreview';
 import PageItemImage from 'components/PageItemImage';
 import PageItemOrg from 'components/PageItemOrg';
 import PageItemResource from 'components/PageItemResource';
@@ -31,6 +33,8 @@ export class PageSection extends React.PureComponent { // eslint-disable-line re
   render() {
 
     const pageItems = {
+      PageItemFileDownload,
+      PageItemFilePreview,
       PageItemImage,
       PageItemOrg,
       PageItemString,
