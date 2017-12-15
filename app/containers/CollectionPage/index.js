@@ -40,7 +40,6 @@ export class CollectonPage extends React.Component { // eslint-disable-line reac
     const { collection, error, loading } = this.props;
     const collectionType = 'organization';
 
-    console.log(collection);
     const data = {
       collection,
       collectionType,

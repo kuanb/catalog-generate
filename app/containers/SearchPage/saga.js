@@ -101,7 +101,12 @@ function getFacetValue(doc, facet, facets) {
         docR = doc[field].slice(0);
       }
       else {
-        docR = Object.keys(docR).length === 0 ? Object.assign({}, doc[field]) : docR[field];
+        // TODO: differently.
+        if (doc[field] !== undefined) {
+          docR = Object.keys(docR).length === 0 ? Object.assign({}, doc[field]) : docR[field];
+        } else {
+          docR = Object.keys(docR).length === 0 ? ' ' : docR[field];
+        }
       }
     }
   });

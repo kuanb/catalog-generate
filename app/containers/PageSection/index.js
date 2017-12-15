@@ -17,6 +17,7 @@ import PageItemFilePreview from 'containers/PageItemFilePreview';
 import PageItemImage from 'components/PageItemImage';
 import PageItemOrg from 'components/PageItemOrg';
 import PageItemResource from 'components/PageItemResource';
+import PageItemSchema from 'components/PageItemSchema';
 import PageItemSearchPage from 'components/PageItemSearchPage';
 import PageItemSocial from 'components/PageItemSocial';
 import PageItemString from 'components/PageItemString';
@@ -37,6 +38,7 @@ export class PageSection extends React.PureComponent { // eslint-disable-line re
       PageItemFilePreview,
       PageItemImage,
       PageItemOrg,
+      PageItemSchema,
       PageItemString,
       PageItemText,
       PageItemTag,
@@ -58,7 +60,7 @@ export class PageSection extends React.PureComponent { // eslint-disable-line re
     if (fields && doc) {
       const section = Object.keys(fields).map((field, index) => {
         const Component = pageItems[`PageItem${fields[field].type}`];
-        const label = fields[field].label;
+        const label = 'label' in fields[field] ? [field].label : false;
         const labelValue = field === 'widget' ? '' : schema.properties[field].title;
         const def = fields[field];
         const item = {

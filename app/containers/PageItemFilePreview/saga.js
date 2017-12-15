@@ -9,7 +9,8 @@ import { makeSelect } from './selectors';
 import parse from 'csv-parse';
 
 function parseResponse(response) {
-  const contentType = response.headers.get('Content-Type');
+  const initialContentType = response.headers.get('Content-Type');
+  const contentType = initialContentType.substring(0, initialContentType.indexOf(';'));
   const length = response.headers.get('Content-Length');
   if (length < 9999) {
     if (contentType === 'text/csv') {

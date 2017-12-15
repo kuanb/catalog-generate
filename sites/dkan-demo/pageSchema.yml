@@ -2,16 +2,12 @@ dataset:
   Main:
     description:
       type: Text 
-      label: false 
     theme:
       type: Theme
-      label: false
     keyword:
       type: Tag
-      label: false
     distribution:
       type: Resource
-      label: false
   Table:
     issued:
       type: String
@@ -76,25 +72,21 @@ dataset:
       label: true
     widget:
       type: Social
-      label: false
 distribution:
   Main:
     description:
       type: Text 
-      label: false
     downloadURL:
       type: FileDownload 
-      label: false 
     accessURL:
       type: FileDownload 
-      label: false 
     widget:
       type: FilePreview
-      label: false
       fields:
         - downloadURL
         - accessURL 
-
+    schema:
+      type: Schema
   Table:
     isssued:
       type: String
@@ -131,10 +123,8 @@ organization:
       float: left
     description:
       type: Text 
-      label: false
     widget:
       type: SearchPage
-      label: false
       collection: publisher
       arg: name
     
