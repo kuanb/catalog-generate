@@ -30,12 +30,6 @@ private:
     apiKey:  
     index: healthdata 
   aws:
-    accessKeyId: AKIAIXCVW6QRASG532ZQ 
-    secretAccessKey: 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
-    region: us-west-2
-    es:
-      endpoint: https://search-interra-hakxd4cqlxcaapxlc7hzatsani.us-west-2.es.amazonaws.com
-      index: hhs 
 fontConfig:
   backColor: "#fff"
   link: "#0A77BD"
