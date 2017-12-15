@@ -12,7 +12,7 @@ function parseResponse(response) {
   const initialContentType = response.headers.get('Content-Type');
   const contentType = initialContentType.substring(0, initialContentType.indexOf(';'));
   const length = response.headers.get('Content-Length');
-  if (length < 9999) {
+  if (length < 99999) {
     if (contentType === 'text/csv') {
       return response.text().then((item) => {
          return new Promise(resolve => {
@@ -25,7 +25,7 @@ function parseResponse(response) {
       return response.json().then(item);
     }
   } else {
-    return [];
+    return false;
   }
 }
 

@@ -60,6 +60,7 @@ export class PageItemFilePreview extends React.Component { // eslint-disable-lin
     } else if (error || !fileData) {
       content = <div className="alert alert-info">File preview could not be displayed</div>;
     } else {
+      console.log(fileData);
       const cols = Object.keys(fileData[0]).map((key) => {
         key = key ? key : ' ';
         return {

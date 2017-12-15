@@ -1,5 +1,5 @@
 name: 'DKAN Demo'
-prodUrl: http://dkan-demo-example.data.interra.io
+prodUrl: http://catalog-demo.interra.io
 testUrl: http://localhost:3000
 devUrl: http://localhost:3000
 identifier: dkan-demo
@@ -12,6 +12,7 @@ front-page-icons:
  - health-care
  - public-safety
  - transportation
+ - education 
 search:
   type: simpleSearch 
   endpoint: https://oac6jckk0f.execute-api.us-west-2.amazonaws.com/prod
