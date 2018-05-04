@@ -183,8 +183,10 @@ prog
   })
   .command('run-dev-dll')
   .help('builds dll for dev server.')
-  .action(() => {
+  .argument('site', 'The site run')
+  .action((args) => {
     process.env.NODE_ENV = 'development';
+    process.env.SITE = args.site;
     shell.exec('./internals/scripts/dependencies.js');
   })
   .command('run-dev-tunnel')
